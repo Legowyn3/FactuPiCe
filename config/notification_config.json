@@ -1,0 +1,32 @@
+{
+    "email": {
+        "from": "notificaciones@empresa.com",
+        "recipients": [
+            "admin@empresa.com",
+            "soporte@empresa.com"
+        ],
+        "smtp_host": "smtp.empresa.com",
+        "smtp_port": 587,
+        "use_tls": true,
+        "username": "notificaciones@empresa.com",
+        "password": "REPLACE_WITH_ACTUAL_PASSWORD"
+    },
+    "slack": {
+        "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+        "default_channel": "#aeat-notifications",
+        "mention_users": ["@admin"]
+    },
+    "webhook": {
+        "url": "https://api.empresa.com/notifications",
+        "auth_token": "REPLACE_WITH_ACTUAL_TOKEN"
+    },
+    "channels": {
+        "critical": ["email", "slack", "webhook"],
+        "high": ["email", "slack"],
+        "medium": ["slack"],
+        "low": ["slack"],
+        "certificate": ["email", "slack"],
+        "security": ["email", "slack", "webhook"],
+        "aeat_error": ["email", "slack"]
+    }
+}

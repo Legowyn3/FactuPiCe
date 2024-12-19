@@ -1,0 +1,36 @@
+{
+  "project_name": "Invoice Management System",
+  "version": "0.1.0",
+  "last_updated": "2024-12-18T20:24:08.271Z",
+  "tech_stack": {
+    "frontend": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Recharts"
+    ],
+    "backend": [
+      "Prisma",
+      "PostgreSQL",
+      "NextAuth"
+    ],
+    "testing": [
+      "Jest",
+      "React Testing Library"
+    ]
+  },
+  "current_features": [
+    "User Authentication",
+    "Invoice CRUD Operations",
+    "Advanced Filtering",
+    "Invoice Statistics",
+    "CSV Export"
+  ],
+  "recent_changes": [
+    "Actualizar lógica de facturas para manejar campos antiguos y nuevos",
+    "Añadir validaciones más estrictas para campos de facturas",
+    "Corregir mensajes de error en validaciones de facturas",
+    "Manejar campo description en fetchedInvoice usando aserción de tipo",
+    "Corregir tipos y validaciones de facturas para manejar campos opcionales"
+  ]
+}

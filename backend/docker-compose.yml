@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Servicio de base de datos PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: factupi-postgres
+    environment:
+      POSTGRES_DB: factupi_ce
+      POSTGRES_USER: factupi
+      POSTGRES_PASSWORD: factupi_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - factupi-network
+
+  # Servicio de Redis para caché y rate limiting
+  redis:
+    image: redis:7-alpine
+    container_name: factupi-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - factupi-network
+
+  # Servicio de backend NestJS
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: factupi-backend
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=factupi
+      - DB_PASSWORD=factupi_password
+      - DB_DATABASE=factupi_ce
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - factupi-network
+
+  # Servicio de Prometheus para métricas
+  prometheus:
+    image: prom/prometheus
+    container_name: factupi-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - factupi-network
+
+  # Servicio de Grafana para visualización
+  grafana:
+    image: grafana/grafana
+    container_name: factupi-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - factupi-network
+
+volumes:
+  postgres-data:
+  redis-data:
+  grafana-data:
+
+networks:
+  factupi-network:
+    driver: bridge
