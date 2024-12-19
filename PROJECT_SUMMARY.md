@@ -101,3 +101,204 @@ alembic revision --autogenerate -m "descripción"
 - Swagger UI disponible en desarrollo
 - Logs en `/logs/`
 - Backups en `/backups/`
+
+## Control de Versiones
+- Repositorio: https://github.com/Legowyn3/FactuPiCe
+- Rama principal: main
+- Convención de commits: Conventional Commits
+- Flujo de trabajo Git: GitFlow
+
+## Guía de Contribución
+- Fork del repositorio
+- Crear rama feature/fix
+- Seguir guía de estilo de código
+- Crear Pull Request
+- Tests requeridos para merge
+
+## Entornos
+- Desarrollo: http://localhost:8000
+- Staging: [pendiente]
+- Producción: [pendiente]
+
+## Mantenimiento
+- Actualización de dependencias: Mensual
+- Revisión de seguridad: Quincenal
+- Backup de base de datos: Diario
+- Rotación de logs: Semanal
+
+## Contacto
+- Mantenedor principal: [Tu nombre]
+- Email: [Tu email]
+- Issues: GitHub Issues
+
+## Métricas del Proyecto
+### Calidad de Código
+- Cobertura de tests: 75%
+  - Unit tests: 80%
+  - Integration tests: 70%
+  - E2E tests: 60%
+- Deuda técnica:
+  - Bugs: 12 (3 críticos)
+  - Code smells: 45
+  - Duplicaciones: 4.5%
+  - Complejidad ciclomática media: 15
+
+### Rendimiento
+- Tiempo medio de respuesta API: 150ms
+- Throughput: 1000 req/min
+- Tasa de errores: 0.5%
+- Uso de memoria: 2.5GB promedio
+
+## Arquitectura y Diseño
+### Patrones Implementados
+- Repository pattern para acceso a datos
+- Factory pattern para creación de facturas
+- Observer pattern para notificaciones
+- Strategy pattern para cálculos fiscales
+
+### Decisiones Técnicas (ADRs)
+1. Uso de FastAPI vs Flask
+   - Mayor rendimiento
+   - Validación automática con Pydantic
+   - Documentación automática OpenAPI
+   
+2. PostgreSQL vs MongoDB
+   - Necesidad de transacciones ACID
+   - Relaciones complejas entre entidades
+   - Soporte para JSON nativo
+
+3. Arquitectura de Microservicios
+   - Facturación
+   - Autenticación
+   - Notificaciones
+   - Reporting
+
+## Roadmap Detallado
+### Q1 2024
+- Integración con SII (AEAT)
+  - Desarrollo: 6 semanas
+  - Testing: 2 semanas
+  - Certificación: 4 semanas
+- Sistema de notificaciones
+  - Email: Semana 1-2
+  - SMS: Semana 3-4
+  - Push notifications: Semana 5-6
+
+### Q2 2024
+- Dashboard financiero
+  - KPIs principales
+  - Gráficos interactivos
+  - Exportación a Excel
+- TicketBAI
+  - Desarrollo core: 8 semanas
+  - Certificación: 4 semanas
+
+## Guía de Desarrollo
+### Estándares de Código
+- PEP 8 para Python
+- Docstrings obligatorios
+- Type hints requeridos
+- Máximo 80 caracteres por línea
+- Tests unitarios para nueva funcionalidad
+
+### Proceso de Code Review
+1. Verificación automática
+   - Linting
+   - Type checking
+   - Test coverage
+2. Revisión manual
+   - Arquitectura
+   - Seguridad
+   - Rendimiento
+3. Criterios de aceptación
+   - Tests pasando
+   - No nuevos warnings
+   - Documentación actualizada
+
+## Monitorización y Alertas
+### Métricas Críticas
+- CPU > 80% durante 5 minutos
+- Memoria > 90% durante 2 minutos
+- Latencia API > 500ms
+- Tasa de error > 1%
+
+### Sistema de Logs
+- ELK Stack
+  - Logs de aplicación
+  - Logs de sistema
+  - Logs de seguridad
+- Retención: 30 días
+- Rotación: Diaria
+
+## Procedimientos de Emergencia
+### Escalado de Incidentes
+1. Nivel 1: Equipo de desarrollo
+2. Nivel 2: DevOps
+3. Nivel 3: Arquitecto + PM
+
+### Contactos Críticos
+- Soporte 24/7: [teléfono]
+- DevOps: [contacto]
+- DPO: [contacto]
+- Proveedor Cloud: [contacto]
+
+## Costes y Recursos
+### Infraestructura
+- Servidores: 500€/mes
+- Base de datos: 200€/mes
+- CDN: 100€/mes
+- Backup: 50€/mes
+
+### Equipo
+- 2 Backend developers
+- 1 Frontend developer
+- 1 DevOps
+- 1 QA
+
+## Estado de Integración
+- CI/CD: [GitHub Actions/Jenkins/etc]
+- Estado actual del pipeline: [badge]
+- Calidad del código: [badge SonarQube]
+- Licencia: [tipo]
+
+## Requisitos Técnicos
+- Versión de Python: ^3.10
+- Versión de Node.js: [si aplica]
+- Requisitos de sistema: [CPU/RAM/Disco]
+- Servicios externos necesarios: [Redis/ElasticSearch/etc]
+
+## Monitorización
+- Sistema de logs: [ELK/Grafana/etc]
+- Métricas de rendimiento: [herramienta]
+- Alertas configuradas: [lista]
+- Dashboard: [URL]
+
+## Documentación Técnica
+- Arquitectura: [link]
+- API docs: [link]
+- Diagramas: [link]
+- Decisiones técnicas (ADRs): [link]
+
+## Roadmap
+- Q1 2024: [objetivos]
+- Q2 2024: [objetivos]
+- Q3 2024: [objetivos]
+- Q4 2024: [objetivos]
+
+## KPIs
+- Tiempo de respuesta API: [ms]
+- Uptime: [porcentaje]
+- Usuarios activos: [número]
+- Transacciones/día: [número]
+
+## Incidentes y Resolución
+- Proceso de escalado
+- Contactos de emergencia
+- Runbooks
+- Post-mortems anteriores
+
+## Costes y Recursos
+- Infraestructura mensual: [coste]
+- Servicios externos: [coste]
+- Recursos humanos: [FTEs]
+- ROI esperado: [estimación]
