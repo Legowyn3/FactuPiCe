@@ -1,354 +1,344 @@
-# FactuPiCe - Sistema de Facturación
+# FactuPiCe: Sistema de Facturación para Autónomos y Empresas
 
-## Estado del Proyecto
-**Versión:** 1.0.0  
-**Estado:** En desarrollo  
-**Última actualización:** Diciembre 2023
+## Información del Proyecto
+- **Versión:** 0.2.0
+- **Estado:** En desarrollo activo
+- **Última actualización:** 2024-12-20
+- **Repositorio:** [GitHub - FactuPiCe](https://github.com/Legowyn3/FactuPiCe)
 
-## Descripción
-Sistema de facturación diseñado para autónomos y pequeñas empresas, con énfasis en seguridad y cumplimiento normativo.
+## Descripción General
+FactuPiCe es una aplicación de facturación diseñada específicamente para autónomos y empresas en España, cumpliendo con las regulaciones fiscales españolas.
 
-## Estructura del Proyecto
+## Arquitectura del Sistema
+
+### Diagrama de Alto Nivel
 ```
-backend/app/
-├── api/                  # API endpoints específicos
-├── auth/                 # Sistema de autenticación
-├── backup/              # Sistema de respaldo
-├── core/                # Funcionalidades core
-├── models/              # Modelos de datos
-├── routes/              # Rutas de la API
-├── schemas/             # Esquemas Pydantic
-├── security/            # Características de seguridad
-├── services/            # Servicios de negocio
-└── utils/               # Utilidades generales
+[Frontend] <--> [Backend API] <--> [Base de Datos PostgreSQL]
+                    |
+                    +--> [Servicios Externos]
+                    |
+                    +--> [Monitoreo Prometheus]
 ```
 
-## Características Implementadas
-### Seguridad
-- ✅ Autenticación JWT
-- ✅ MFA (Multi-Factor Authentication)
-- ✅ Rate Limiting
-- ✅ Validación de contraseñas
-- ✅ Auditoría de eventos
-- ✅ Backup automático
-- ✅ Middleware de seguridad HTTPS
+### Componentes Principales
+- **Frontend:** En definición (potencial framework: React, Vue)
+- **Backend:** NestJS con TypeScript
+- **Base de Datos:** PostgreSQL
+- **Autenticación:** JWT con Passport.js
+- **Monitoreo:** Prometheus
+- **Contenedorización:** Docker (opcional)
 
-### Facturación
-- ✅ Gestión de facturas
-- ✅ Firma digital
-- ✅ Generación de PDF
-- ✅ Validación VERI*FACTU
-- ✅ Cálculos automáticos de IVA
+## Tecnologías Principales
 
-### Clientes
-- ✅ Gestión de clientes
-- ✅ Historial de facturas por cliente
+### Backend
+- Lenguaje: TypeScript 4.9+
+- Framework: NestJS 9.x
+- ORM: TypeORM 0.3.x
+- Base de Datos: PostgreSQL 13+
 
-## Dependencias Principales
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- PyJWT
-- python-jose[cryptography]
-- passlib[bcrypt]
-- pyotp (MFA)
-- python-multipart
+### Autenticación y Seguridad
+- JWT (JSON Web Tokens)
+- Passport.js
+- bcrypt para encriptación
+- Validación de entrada de datos
 
-## Configuración Necesaria
-1. Variables de entorno (.env):
-   ```
-   DATABASE_URL=postgresql://user:pass@localhost/db
-   SECRET_KEY=your-secret-key
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   ```
+### Infraestructura
+- Contenedores: Docker
+- Orquestación: Pendiente
+- CI/CD: Configuración inicial
 
-2. Base de datos:
-   - PostgreSQL requerido
-   - Ejecutar migraciones: `alembic upgrade head`
+## Estrategia de Seguridad
+
+### Principios
+- Encriptación de contraseñas con bcrypt
+- Validación de tokens en cada solicitud
+- Protección de datos sensibles
+- Validación estricta de entrada de datos
+
+### Políticas de Seguridad
+- Rotación periódica de credenciales
+- Gestión de secretos
+- Configuración de CORS
+- Validación de entrada de datos
+- Logging de eventos de seguridad
+
+## Estado de Desarrollo
+
+### Características Implementadas
+#### Seguridad
+- [x] Autenticación JWT
+- [x] Validación de contraseñas
+- [x] Middleware de seguridad
+- [ ] Multi-Factor Authentication (MFA)
+
+#### Modelo de Datos
+- [x] Modelo de Factura
+- [x] Modelo de Cliente
+- [x] Configuración inicial de base de datos
+- [ ] Validaciones de negocio
+
+#### Facturación
+- [ ] Generación de facturas
+- [ ] Cálculo automático de IVA
+- [ ] Exportación a PDF
+- [ ] Integración con formatos fiscales
+
+#### Monitoreo
+- [x] Integración de Prometheus
+- [x] Métricas personalizadas
+- [ ] Dashboard de monitoreo
+- [ ] Alertas y notificaciones
 
 ## Próximos Pasos
-1. Implementar sistema de notificaciones
-2. Añadir integración con TicketBAI
-3. Desarrollar dashboard financiero
-4. Implementar exportación a SII (AEAT)
-5. Añadir tests automatizados
 
-## Notas de Seguridad
-- Todas las contraseñas se hashean con bcrypt
-- Implementado rate limiting para prevenir ataques de fuerza bruta
-- Logs de auditoría para todas las operaciones sensibles
-- Backups automáticos diarios
-- Validación estricta de datos de entrada
+### Curto Plazo (Q1 2024)
+1. Completar implementación de autenticación
+2. Desarrollar lógica de generación de facturas
+3. Implementar validaciones de negocio
+4. Configurar exportación a formatos fiscales
 
-## Comandos Útiles
-```bash
-# Iniciar servidor
-uvicorn app.main:app --reload
+### Medio Plazo (Q2 2024)
+1. Integración con servicios externos
+2. Definir estrategia de frontend
+3. Implementar pruebas de integración
+4. Configurar CI/CD
 
-# Ejecutar tests
-pytest
-
-# Crear backup manual
-python -m app.backup.backup_manager
-
-# Generar nueva migración
-alembic revision --autogenerate -m "descripción"
-```
-
-## Documentación Adicional
-- API docs: `/docs` o `/redoc`
-- Swagger UI disponible en desarrollo
-- Logs en `/logs/`
-- Backups en `/backups/`
-
-## Control de Versiones
-- Repositorio: https://github.com/Legowyn3/FactuPiCe
-- Rama principal: main
-- Convención de commits: Conventional Commits
-- Flujo de trabajo Git: GitFlow
-
-## Guía de Contribución
-- Fork del repositorio
-- Crear rama feature/fix
-- Seguir guía de estilo de código
-- Crear Pull Request
-- Tests requeridos para merge
-
-## Entornos
-- Desarrollo: http://localhost:8000
-- Staging: [pendiente]
-- Producción: [pendiente]
-
-## Mantenimiento
-- Actualización de dependencias: Mensual
-- Revisión de seguridad: Quincenal
-- Backup de base de datos: Diario
-- Rotación de logs: Semanal
-
-## Contacto
-- Mantenedor principal: [Tu nombre]
-- Email: [Tu email]
-- Issues: GitHub Issues
-
-## Métricas del Proyecto
-### Calidad de Código
-- Cobertura de tests: 75%
-  - Unit tests: 80%
-  - Integration tests: 70%
-  - E2E tests: 60%
-- Deuda técnica:
-  - Bugs: 12 (3 críticos)
-  - Code smells: 45
-  - Duplicaciones: 4.5%
-  - Complejidad ciclomática media: 15
-
-### Rendimiento
-- Tiempo medio de respuesta API: 150ms
-- Throughput: 1000 req/min
-- Tasa de errores: 0.5%
-- Uso de memoria: 2.5GB promedio
-
-## Arquitectura y Diseño
-### Patrones Implementados
-- Repository pattern para acceso a datos
-- Factory pattern para creación de facturas
-- Observer pattern para notificaciones
-- Strategy pattern para cálculos fiscales
-
-### Decisiones Técnicas (ADRs)
-1. Uso de FastAPI vs Flask
-   - Mayor rendimiento
-   - Validación automática con Pydantic
-   - Documentación automática OpenAPI
-   
-2. PostgreSQL vs MongoDB
-   - Necesidad de transacciones ACID
-   - Relaciones complejas entre entidades
-   - Soporte para JSON nativo
-
-3. Arquitectura de Microservicios
-   - Facturación
-   - Autenticación
-   - Notificaciones
-   - Reporting
-
-## Roadmap Detallado
-### Q1 2024
-- Integración con SII (AEAT)
-  - Desarrollo: 6 semanas
-  - Testing: 2 semanas
-  - Certificación: 4 semanas
-- Sistema de notificaciones
-  - Email: Semana 1-2
-  - SMS: Semana 3-4
-  - Push notifications: Semana 5-6
-
-### Q2 2024
-- Dashboard financiero
-  - KPIs principales
-  - Gráficos interactivos
-  - Exportación a Excel
-- TicketBAI
-  - Desarrollo core: 8 semanas
-  - Certificación: 4 semanas
-
-## Guía de Desarrollo
-### Estándares de Código
-- PEP 8 para Python
-- Docstrings obligatorios
-- Type hints requeridos
-- Máximo 80 caracteres por línea
-- Tests unitarios para nueva funcionalidad
-
-### Proceso de Code Review
-1. Verificación automática
-   - Linting
-   - Type checking
-   - Test coverage
-2. Revisión manual
-   - Arquitectura
-   - Seguridad
-   - Rendimiento
-3. Criterios de aceptación
-   - Tests pasando
-   - No nuevos warnings
-   - Documentación actualizada
-
-## Monitorización y Alertas
-### Métricas Críticas
-- CPU > 80% durante 5 minutos
-- Memoria > 90% durante 2 minutos
-- Latencia API > 500ms
-- Tasa de error > 1%
-
-### Sistema de Logs
-- ELK Stack
-  - Logs de aplicación
-  - Logs de sistema
-  - Logs de seguridad
-- Retención: 30 días
-- Rotación: Diaria
-
-## Procedimientos de Emergencia
-### Escalado de Incidentes
-1. Nivel 1: Equipo de desarrollo
-2. Nivel 2: DevOps
-3. Nivel 3: Arquitecto + PM
-
-### Contactos Críticos
-- Soporte 24/7: [teléfono]
-- DevOps: [contacto]
-- DPO: [contacto]
-- Proveedor Cloud: [contacto]
-
-## Costes y Recursos
-### Infraestructura
-- Servidores: 500€/mes
-- Base de datos: 200€/mes
-- CDN: 100€/mes
-- Backup: 50€/mes
-
-### Equipo
-- 2 Backend developers
-- 1 Frontend developer
-- 1 DevOps
-- 1 QA
-
-## Estado de Integración
-- CI/CD: [GitHub Actions/Jenkins/etc]
-- Estado actual del pipeline: [badge]
-- Calidad del código: [badge SonarQube]
-- Licencia: [tipo]
-
-## Requisitos Técnicos
-- Versión de Python: ^3.10
-- Versión de Node.js: [si aplica]
-- Requisitos de sistema: [CPU/RAM/Disco]
-- Servicios externos necesarios: [Redis/ElasticSearch/etc]
-
-## Monitorización
-- Sistema de logs: [ELK/Grafana/etc]
-- Métricas de rendimiento: [herramienta]
-- Alertas configuradas: [lista]
-- Dashboard: [URL]
+### Largo Plazo (Q3-Q4 2024)
+1. Soporte para múltiples idiomas
+2. Integración con pasarelas de pago
+3. Reporting avanzado
+4. Optimización de rendimiento
 
 ## Documentación Técnica
-- Arquitectura: [link]
-- API docs: [link]
-- Diagramas: [link]
-- Decisiones técnicas (ADRs): [link]
 
-## Roadmap
-- Q1 2024: [objetivos]
-- Q2 2024: [objetivos]
-- Q3 2024: [objetivos]
-- Q4 2024: [objetivos]
+### Configuración de Desarrollo
 
-## KPIs
-- Tiempo de respuesta API: [ms]
-- Uptime: [porcentaje]
-- Usuarios activos: [número]
-- Transacciones/día: [número]
+#### Requisitos Previos
+- Node.js 18.x
+- npm 9.x
+- PostgreSQL 13+
+- Docker (opcional)
 
-## Incidentes y Resolución
-- Proceso de escalado
-- Contactos de emergencia
-- Runbooks
-- Post-mortems anteriores
+#### Scripts de NPM
+- `npm run start`: Iniciar servidor en modo desarrollo
+- `npm run build`: Compilar proyecto
+- `npm run migration:create`: Crear nueva migración
+- `npm run migration:generate`: Generar archivos de migración
+- `npm run test`: Ejecutar pruebas unitarias
 
-## Costes y Recursos
-- Infraestructura mensual: [coste]
-- Servicios externos: [coste]
-- Recursos humanos: [FTEs]
-- ROI esperado: [estimación]
+### Guía de Configuración Inicial
+1. Clonar repositorio
+2. Instalar dependencias: `npm install`
+3. Configurar variables de entorno
+4. Inicializar base de datos
+5. Ejecutar migraciones
+6. Iniciar servidor de desarrollo
 
-## Resumen del Proyecto
-### Configuración del Entorno de Desarrollo
-- [x] Configuración de scripts de instalación
-- [x] Configuración de NVM y Node.js
-- [x] Instalación de herramientas de desarrollo
-- [x] Configuración de Docker
-- [x] Configuración de permisos de npm
+## Métricas y Monitoreo
 
-### Configuración de Base de Datos
-- [x] Instalación de PostgreSQL
-- [x] Script de configuración de base de datos
-- [x] Migración inicial de esquema
-- [x] Configuración de conexión TypeORM
-- [x] Modelos de entidad base
-  - [x] Usuario
-  - [x] Cliente
-  - [x] Factura
-  - [x] Línea de Factura
+### Métricas Técnicas
+- **Cobertura de pruebas:** Por definir
+- **Tiempo de respuesta del API:** Por medir
+- **Complejidad ciclomática:** Por evaluar
 
-### Monitoreo y Métricas
-- [x] Integración de Prometheus
-- [x] Configuración de métricas personalizadas
-- [x] Servicio de monitoreo con métodos completos
-- [ ] Configuración de exportación de métricas
+### Monitoreo Planificado
+- Métricas de rendimiento
+- Logs de aplicación
+- Seguimiento de errores
+- Alertas de sistema
 
-### Próximos Pasos
-1. Implementar servicios para entidades
-2. Crear controladores REST
-3. Configurar autenticación y autorización
-4. Desarrollar lógica de negocio
-5. Implementar validaciones
-6. Configurar pruebas unitarias e integración
+## Contribución
 
-### Herramientas y Tecnologías
-- NestJS
-- TypeORM
-- PostgreSQL
-- Prometheus
-- Docker
-- TypeScript
+### Guía para Desarrolladores
+1. Fork del repositorio
+2. Crear rama feature/fix
+3. Seguir guía de estilo de código
+4. Pasar tests de CI
+5. Crear Pull Request
+6. Revisión de código
 
-### Notas de Desarrollo
-- Enfoque en código limpio y mantenible
-- Uso de TypeScript para tipado seguro
-- Configuración modular
-- Énfasis en seguridad y rendimiento
+### Estándares de Código
+- TypeScript con strict mode
+- Seguir guía de estilo de NestJS
+- Documentación de código
+- Cobertura de tests
 
-## Historial de Cambios
-- 2024-12-20: Configuración inicial de modelos y monitoreo
+## Contacto y Soporte
+- Mantenedor: [Tu nombre]
+- Email: [Tu email]
+- Reportar issues: [Enlace a GitHub Issues]
+
+## Licencia
+[Especificar licencia del proyecto]
+
+## Gestión de Proyecto
+- Metodología: Scrum adaptado
+- Herramientas: GitHub Projects
+- Frecuencia de sprints: Quincenal
+- Revisiones técnicas: Semanales
+
+## Cumplimiento Normativo
+- Normativas fiscales españolas
+- LOPD
+- Facturación electrónica
+- Próxima certificación: [Detalles]
+
+## Apéndices
+- [Enlace a documentación detallada]
+- [Guía de instalación]
+- [Especificación de API]
+
+## Lanzamiento y Roadmap Detallado
+
+### Estimación de Lanzamiento
+
+#### Base Estable (MVP - Producto Mínimo Viable)
+- **Fecha Estimada:** Q3 2024 (Septiembre-Octubre)
+- **Estado Actual:** En desarrollo
+
+##### Criterios para Base Estable
+Funcionalidades Críticas:
+- [x] Autenticación de usuarios
+- [x] Modelo de datos de facturas
+- [x] Configuración de base de datos
+- [ ] Generación básica de facturas
+- [ ] Cálculo de IVA
+- [ ] Exportación a PDF
+- [ ] Validaciones de negocio
+- [ ] Pruebas unitarias e integración
+- [ ] Configuración de CI/CD
+- [ ] Monitoreo básico
+
+#### Beta Pública
+- **Fecha Estimada:** Q4 2024 (Noviembre-Diciembre)
+
+##### Criterios para Beta Pública
+- Todas las funcionalidades del MVP completadas
+- Integración con servicios fiscales básicos
+- Interfaz de usuario funcional
+- Documentación completa
+- Soporte inicial implementado
+- Pruebas de seguridad realizadas
+- Cumplimiento inicial de normativas fiscales
+
+### Plan de Desarrollo Detallado
+
+#### Próximos Pasos Inmediatos
+1. **Modelo de Datos y Entidades**
+   - Completar modelos de Factura, Cliente, Línea de Factura
+   - Implementar validaciones de negocio
+   - Definir relaciones entre entidades
+
+2. **Lógica de Negocio**
+   - Desarrollar servicio de generación de facturas
+   - Implementar cálculo de IVA
+   - Crear servicio de exportación a PDF
+   - Definir reglas de negocio específicas
+
+3. **Infraestructura y Configuración**
+   - Configurar CI/CD (GitHub Actions)
+   - Implementar pipeline de testing
+   - Configurar monitoreo con Prometheus
+   - Definir estrategia de logging
+
+4. **Seguridad**
+   - Completar implementación de JWT
+   - Añadir Multi-Factor Authentication
+   - Realizar auditoría de seguridad inicial
+   - Implementar rate limiting
+
+5. **Integración Fiscal**
+   - Investigar requisitos de TicketBAI
+   - Definir estrategia de cumplimiento normativo
+   - Preparar integración con servicios de la AEAT
+
+### Inversión y Recursos
+
+#### Estimación de Recursos
+- **Equipo:** 2-3 desarrolladores
+- **Duración Estimada:** 
+  - Hasta MVP: 3-4 meses
+  - Hasta Beta Pública: 5-6 meses
+- **Costes Estimados:** 30,000€ - 50,000€
+
+#### Factores Clave de Éxito
+- Desarrollo iterativo
+- Comunicación clara
+- Priorización de features
+- Flexibilidad en el scope
+
+### Riesgos y Mitigación
+
+#### Posibles Desafíos
+1. Complejidad de integración fiscal
+2. Requisitos de seguridad cambiantes
+3. Pruebas exhaustivas
+4. Cambios en regulaciones
+
+#### Estrategias de Mitigación
+- Consulta con asesor fiscal
+- Revisiones de seguridad frecuentes
+- Desarrollo modular
+- Documentación detallada
+- Comunicación proactiva con stakeholders
+
+### Métricas de Progreso
+- Cobertura de tests
+- Tiempo de desarrollo de features
+- Número de bugs encontrados
+- Cumplimiento de requisitos normativos
+
+### Próxima Revisión
+- **Fecha:** Enero 2024
+- **Objetivo:** Validar progreso del MVP
+- **Participantes:** Equipo de desarrollo, stakeholders
+
+## Últimas Mejoras y Desarrollo
+
+### Versión 0.2.0 (2024-12-20)
+
+#### Módulo de Líneas de Factura
+- **Entidades**:
+  - Actualización del modelo `LineaFactura` con validaciones robustas
+  - Añadidos campos de auditoría (`createdAt`, `updatedAt`)
+  - Implementados métodos de negocio:
+    - `calcularSubtotal()`: Cálculo automático del subtotal
+    - `aplicarDescuento()`: Aplicación de descuentos con validaciones
+
+- **DTOs (Data Transfer Objects)**:
+  - Creados `CreateLineaFacturaDto` y `UpdateLineaFacturaDto`
+  - Implementadas validaciones con `class-validator`
+  - Documentación de propiedades con Swagger
+
+- **Servicio**:
+  - Implementado `LineaFacturaService` con operaciones CRUD completas
+  - Mejora del manejo de errores con tipado explícito
+  - Gestión de relaciones entre líneas de factura y facturas
+  - Cálculo automático de totales
+
+- **Controlador**:
+  - Creado `LineaFacturaController` con endpoints REST
+  - Protección de endpoints con JWT
+  - Documentación de API con Swagger
+
+#### Mejoras de Desarrollo
+- Resolución de errores de TypeScript en modelos y DTOs
+- Implementación de validaciones de negocio
+- Mejora de la gestión de errores
+- Añadidos campos de auditoría en entidades
+
+#### Próximos Pasos
+- Implementar pruebas unitarias para el módulo de líneas de factura
+- Configurar módulo de facturas
+- Revisar y optimizar configuraciones de validación
+
+### Control de Versiones y Documentación
+- **Política de Documentación**: Actualizar `PROJECT_SUMMARY.md` después de cada iteración de desarrollo
+- **Política de Respaldo**: Realizar commits y push a GitHub después de cada conjunto significativo de cambios
+
+### Notas Importantes
+- Mantener siempre actualizada la documentación del proyecto
+- Realizar commits frecuentes con descripciones claras
+- Priorizar la calidad del código y las validaciones de negocio
+
+*Última actualización: 2024-12-20*
