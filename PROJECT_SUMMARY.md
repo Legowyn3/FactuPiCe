@@ -6,6 +6,28 @@
 - **Última actualización:** 2024-12-20
 - **Repositorio:** [GitHub - FactuPiCe](https://github.com/Legowyn3/FactuPiCe)
 
+## Configuración del Repositorio
+
+### Repositorio GitHub
+- **Nombre**: FactuPiCe
+- **URL**: https://github.com/Legowyn3/FactuPiCe
+- **Tipo**: Repositorio Público
+- **Rama Principal**: main
+
+### Ubicación Local
+- **Directorio de Trabajo**: `/home/piqueras/Documentos/FactuPiCeNew`
+
+### Instrucciones de Backup
+Para realizar una copia de seguridad o clonar el proyecto:
+1. Clonar repositorio: 
+   ```bash
+   git clone https://github.com/Legowyn3/FactuPiCe.git
+   ```
+2. Cambiar a la rama principal:
+   ```bash
+   git checkout main
+   ```
+
 ## Descripción General
 FactuPiCe es una aplicación de facturación diseñada específicamente para autónomos y empresas en España, cumpliendo con las regulaciones fiscales españolas.
 
