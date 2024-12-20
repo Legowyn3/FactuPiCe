@@ -1,0 +1,11 @@
+[
+  "test_backup_system.py::test_backup_cleanup",
+  "test_backup_system.py::test_backup_directories_exist",
+  "test_backup_system.py::test_backup_encryption",
+  "test_backup_system.py::test_backup_permissions",
+  "test_backup_system.py::test_database_backup",
+  "test_backup_system.py::test_logging_system",
+  "test_backup_system.py::test_logs_backup",
+  "test_full_security.py::test_authentication",
+  "test_full_security.py::test_rate_limiting"
+]

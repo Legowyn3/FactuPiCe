@@ -1,66 +1,65 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
+# Dependencias
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos de entorno
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Compilación
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+build/
+out/
 
-# Virtual Environment
-venv/
-ENV/
-env/
+# Logs
+logs/
+*.log
 
-# IDE
+# IDEs y editores
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
 
-# Logs
-*.log
-logs/
+# Sistemas operativos
+.DS_Store
+Thumbs.db
 
-# Local configuration
-.env
-.env.*
-config/local.py
+# Caché
+.cache/
 
-# Certificates and keys
+# Secretos y configuraciones sensibles
 *.pem
 *.key
-*.crt
-*.cer
-*.p12
+secrets/
 
-# Cache
-.cache/
-.pytest_cache/
+# Archivos de configuración específicos
+config/local.json
+config/production.json
 
-# Database
-*.db
-*.sqlite3
+# Dependencias de desarrollo
+.npm
+.pnpm-store/
 
-# Generated files
-*.qr
-*.pdf
-generated/
+# Archivos de prueba
+coverage/
+.nyc_output/
 
-# Temporary files
+# Archivos temporales
 tmp/
 temp/
-node_modules
+
+# Archivos específicos de TypeScript
+*.tsbuildinfo
+
+# Archivos de caché de Jest
+jest_0/
+
+# Archivos de configuración de secretos
+*.secrets
+*.key

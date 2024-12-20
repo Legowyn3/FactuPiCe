@@ -1,78 +1,86 @@
-<<<<<<< HEAD
-# FactuPiCe
-Proyecto Facturacion Autonomos
-=======
-# Sistema de Gestión de Facturas
+# FactuPiCe V2 - Sistema de Facturación
 
 ## Descripción
-Aplicación web para gestión integral de facturas con funcionalidades avanzadas de modelado fiscal.
-
-## Características Principales
-- 🔐 Autenticación de usuarios
-- 📋 Gestión completa de facturas
-- 💡 Cálculo automático de impuestos
-- 📊 Generación de informes fiscales
+Sistema de facturación moderno y escalable desarrollado con NestJS, TypeScript y PostgreSQL.
 
 ## Requisitos Previos
-- Python 3.9+
-- pip
-- virtualenv (opcional pero recomendado)
+- Node.js 18.x o superior
+- npm 9.x o superior
+- Docker (opcional)
+- PostgreSQL 15
 
-## Instalación
+## Configuración del Entorno de Desarrollo
 
-### 1. Clonar Repositorio
+### Instalación de Dependencias
 ```bash
-git clone https://github.com/tu_usuario/gestion-facturas.git
-cd gestion-facturas
+# Clonar repositorio
+git clone https://github.com/tu-usuario/factupicev2.git
+cd factupicev2
+
+# Configurar entorno de desarrollo
+./scripts/dev-environment-setup.sh
+./scripts/npm-setup.sh
+
+# Instalar dependencias del proyecto
+cd backend
+npm install
 ```
 
-### 2. Crear Entorno Virtual
-```bash
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+### Variables de Entorno
+Crea un archivo `.env` en el directorio `backend` con las siguientes variables:
+```
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=tu_usuario
+DATABASE_PASSWORD=tu_contraseña
+DATABASE_NAME=factupicev2
+JWT_SECRET=tu_secreto_jwt
 ```
 
-### 3. Instalar Dependencias
+### Ejecución del Proyecto
 ```bash
-pip install -r requirements.txt
+# Desarrollo
+npm run start:dev
+
+# Producción
+npm run build
+npm run start:prod
 ```
 
-### 4. Configurar Variables de Entorno
-Copiar `.env.example` a `.env` y personalizar configuraciones
-
-### 5. Inicializar Base de Datos
-```bash
-flask db upgrade
-flask init-db
-flask create-admin
-```
-
-### 6. Ejecutar Aplicación
-```bash
-flask run
-```
+## Scripts Disponibles
+- `npm run lint`: Análisis de código estático
+- `npm test`: Ejecutar pruebas unitarias
+- `npm run test:cov`: Ejecutar pruebas con cobertura
+- `scripts/vulnerability-scanner.sh`: Escanear vulnerabilidades
+- `scripts/static-code-analysis.sh`: Análisis de código
 
 ## Estructura del Proyecto
 ```
-/app
-├── models/         # Modelos de datos
-├── routes/         # Rutas de la aplicación
-├── services/       # Servicios y lógica de negocio
-├── static/         # Archivos estáticos
-└── templates/      # Plantillas HTML
+factupicev2/
+├── backend/
+│   ├── src/
+│   │   ├── modules/
+│   │   ├── config/
+│   │   └── main.ts
+│   ├── test/
+│   └── package.json
+├── scripts/
+│   ├── dev-environment-setup.sh
+│   ├── npm-setup.sh
+│   └── static-code-analysis.sh
+└── monitoring/
+    └── grafana-provisioning/
 ```
 
-## Contribuir
-1. Fork del repositorio
-2. Crear rama de características
-3. Commit de cambios
-4. Push a la rama
-5. Crear Pull Request
+## Contribución
+1. Crea un fork del repositorio
+2. Crea una rama para tu característica
+3. Haz commit con mensajes descriptivos
+4. Abre un Pull Request
 
 ## Licencia
 MIT License
 
 ## Contacto
-- Email: soporte@gestionfacturas.com
-- Twitter: @GestionFacturas
->>>>>>> c86aacc (Inicialización del proyecto FactuPiCe)
+- Nombre: Tu Nombre
+- Email: tu.email@example.com

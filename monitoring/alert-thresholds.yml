@@ -1,0 +1,62 @@
+global_thresholds:
+  # Umbrales generales del sistema
+  system:
+    cpu_usage_warning: 70   # Porcentaje de uso de CPU que genera alerta de advertencia
+    cpu_usage_critical: 90  # Porcentaje de uso de CPU que genera alerta crítica
+    memory_usage_warning: 75  # Porcentaje de uso de memoria que genera alerta de advertencia
+    memory_usage_critical: 90  # Porcentaje de uso de memoria que genera alerta crítica
+    disk_usage_warning: 80  # Porcentaje de uso de disco que genera alerta de advertencia
+    disk_usage_critical: 95  # Porcentaje de uso de disco que genera alerta crítica
+
+  # Umbrales de red
+  network:
+    connection_timeout_warning: 500  # ms
+    connection_timeout_critical: 1000  # ms
+    packet_loss_warning: 5  # Porcentaje de pérdida de paquetes
+    packet_loss_critical: 10  # Porcentaje de pérdida de paquetes
+
+# Umbrales específicos de la aplicación
+application:
+  clientes:
+    creation_failure_rate_warning: 10  # Porcentaje de fallos en creación de clientes
+    creation_failure_rate_critical: 25  # Porcentaje de fallos en creación de clientes
+    response_time_warning: 500  # ms
+    response_time_critical: 1000  # ms
+    cache_hit_rate_warning: 70  # Porcentaje de aciertos de caché
+    cache_hit_rate_critical: 50  # Porcentaje de aciertos de caché
+
+  facturas:
+    creation_failure_rate_warning: 5  # Porcentaje de fallos en creación de facturas
+    creation_failure_rate_critical: 15  # Porcentaje de fallos en creación de facturas
+    response_time_warning: 750  # ms
+    response_time_critical: 1500  # ms
+
+# Umbrales de base de datos
+database:
+  connection_pool:
+    usage_warning: 80  # Porcentaje de uso del pool de conexiones
+    usage_critical: 95  # Porcentaje de uso del pool de conexiones
+  
+  query_performance:
+    slow_query_warning: 500  # ms
+    slow_query_critical: 1000  # ms
+    total_connections_warning: 90  # Porcentaje de conexiones máximas
+    total_connections_critical: 100  # Porcentaje de conexiones máximas
+
+# Umbrales de caché
+cache:
+  redis:
+    memory_usage_warning: 70  # Porcentaje de uso de memoria de Redis
+    memory_usage_critical: 90  # Porcentaje de uso de memoria de Redis
+    eviction_rate_warning: 10  # Porcentaje de elementos eliminados de la caché
+    eviction_rate_critical: 25  # Porcentaje de elementos eliminados de la caché
+
+# Umbrales de seguridad
+security:
+  authentication:
+    failed_login_attempts_warning: 10  # Número de intentos de inicio de sesión fallidos
+    failed_login_attempts_critical: 25  # Número de intentos de inicio de sesión fallidos
+    
+  jwt:
+    expiration_warning: 7  # Días antes de expiración del token
+    expiration_critical: 3  # Días antes de expiración del token

@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: factupicer
+Version: 1.0
+Requires-Dist: sqlalchemy
+Requires-Dist: fastapi
+Requires-Dist: python-jose[cryptography]
+Requires-Dist: passlib
+Requires-Dist: python-multipart
+Requires-Dist: python-dotenv
+Requires-Dist: reportlab
+Requires-Dist: alembic
+Requires-Dist: pytz
+Requires-Dist: uvicorn

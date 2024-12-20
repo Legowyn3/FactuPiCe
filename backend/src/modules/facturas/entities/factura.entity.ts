@@ -1,62 +1,67 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { BaseEntity } from '../../../common/entities/base.entity';
 import { Cliente } from '../../clientes/entities/cliente.entity';
-import { ConceptoFactura } from './concepto-factura.entity';
-
-export enum EstadoFactura {
-  BORRADOR = 'BORRADOR',
-  EMITIDA = 'EMITIDA',
-  PAGADA = 'PAGADA',
-  ANULADA = 'ANULADA'
-}
+import { LineaFactura } from './linea-factura.entity';
 
 @Entity('facturas')
-export class Factura {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Factura extends BaseEntity {
   @Column({ unique: true })
-  numero: string;
+  numeroFactura: string = '';
+
+  @ManyToOne(() => Cliente, { nullable: false })
+  @JoinColumn({ name: 'cliente_id' })
+  cliente: Cliente = {} as Cliente;
+
+  @Column({ type: 'uuid', name: 'cliente_id' })
+  clienteId: string = '';
 
   @Column({ type: 'date' })
-  fecha: Date;
+  fechaEmision: Date = new Date();
 
-  @ManyToOne(() => Cliente, cliente => cliente.facturas)
-  cliente: Cliente;
+  @Column({ type: 'date' })
+  fechaVencimiento: Date = new Date();
 
-  @Column()
-  clienteId: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  baseImponible: number = 0;
 
-  @OneToMany(() => ConceptoFactura, concepto => concepto.factura, {
-    cascade: true,
-    eager: true
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  iva: number = 0;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  retencion: number = 0;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  total: number = 0;
+
+  @OneToMany(() => LineaFactura, linea => linea.factura, { cascade: true })
+  lineas: LineaFactura[] = [];
+
+  @Column({ 
+    type: 'enum', 
+    enum: ['pendiente', 'pagada', 'anulada'], 
+    default: 'pendiente' 
   })
-  conceptos: ConceptoFactura[];
+  estado: 'pendiente' | 'pagada' | 'anulada' = 'pendiente';
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  subtotal: number;
+  @Column({ nullable: true })
+  notas: string = '';
 
-  @Column({ type: 'decimal', precision: 5, scale: 2 })
-  iva: number;
-
-  @Column({ type: 'decimal', precision: 5, scale: 2 })
-  retencion: number;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  total: number;
-
-  @Column({
-    type: 'enum',
-    enum: EstadoFactura,
-    default: EstadoFactura.BORRADOR
-  })
-  estado: EstadoFactura;
-
-  @Column({ type: 'text', nullable: true })
-  observaciones?: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-} 
+  constructor(partial: Partial<Factura> = {}) {
+    super();
+    Object.assign(this, {
+      numeroFactura: '',
+      cliente: {} as Cliente,
+      clienteId: '',
+      fechaEmision: new Date(),
+      fechaVencimiento: new Date(),
+      baseImponible: 0,
+      iva: 0,
+      retencion: 0,
+      total: 0,
+      lineas: [],
+      estado: 'pendiente',
+      notas: '',
+      ...partial
+    });
+  }
+}

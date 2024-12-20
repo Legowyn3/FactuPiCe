@@ -1,0 +1,52 @@
+groups:
+- name: clientes_alerts
+  rules:
+  - alert: HighClienteCreationFailureRate
+    expr: sum(increase(factupicev2_cliente_create_total{success="false"}[1h])) / sum(increase(factupicev2_cliente_create_total[1h])) > 0.1
+    for: 10m
+    labels:
+      severity: warning
+      team: backend
+    annotations:
+      summary: "Alta tasa de fallos en creación de clientes"
+      description: "Más del 10% de las creaciones de clientes han fallado en la última hora"
+
+  - alert: SlowClienteSearchPerformance
+    expr: histogram_quantile(0.95, sum(rate(factupicev2_cliente_find_duration_seconds_bucket[5m])) by (le)) > 1
+    for: 5m
+    labels:
+      severity: warning
+      team: backend
+    annotations:
+      summary: "Rendimiento de búsqueda de clientes degradado"
+      description: "El percentil 95 de tiempo de búsqueda de clientes supera 1 segundo"
+
+  - alert: HighClienteDatabaseLoad
+    expr: sum(increase(typeorm_query_total[5m])) > 100
+    for: 10m
+    labels:
+      severity: warning
+      team: backend
+    annotations:
+      summary: "Alta carga en base de datos de clientes"
+      description: "Más de 100 consultas a la base de datos en 5 minutos"
+
+  - alert: ClienteCacheHitRateLow
+    expr: sum(rate(redis_commands_total{cmd="get"}[5m])) / sum(rate(redis_commands_total[5m])) < 0.7
+    for: 15m
+    labels:
+      severity: warning
+      team: backend
+    annotations:
+      summary: "Tasa de aciertos de caché de clientes baja"
+      description: "La tasa de aciertos de caché es inferior al 70%"
+
+  - alert: ClienteServiceDown
+    expr: up{job="nestjs-application"} == 0
+    for: 5m
+    labels:
+      severity: critical
+      team: backend
+    annotations:
+      summary: "Servicio de Clientes Caído"
+      description: "El servicio de clientes no responde"

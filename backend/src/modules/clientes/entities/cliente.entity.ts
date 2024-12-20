@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity } from 'typeorm';
 import { Factura } from '../../facturas/entities/factura.entity';
 
 @Entity('clientes')
-export class Cliente {
+export class Cliente extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string | undefined;
 
@@ -26,4 +26,4 @@ export class Cliente {
 
   @OneToMany(() => Factura, factura => factura.cliente)
   facturas: Factura[] | undefined;
-} 
+}

@@ -1,0 +1,175 @@
+name: CI/CD Pipeline FactuPiCe V2
+
+on:
+  push:
+    branches: 
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  NODE_VERSION: 18.x
+  POSTGRES_VERSION: 15
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install Dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Lint Code
+      working-directory: ./backend
+      run: npm run lint
+    
+    - name: Run Unit Tests
+      working-directory: ./backend
+      run: npm test
+    
+    - name: Static Code Analysis
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: ./backend
+        args: >
+          -Dsonar.organization=factupicev2
+          -Dsonar.projectKey=factupicev2-backend
+          -Dsonar.sources=src
+          -Dsonar.tests=test
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+
+  security-checks:
+    name: Security Vulnerability Scans
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install Dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: NPM Audit
+      working-directory: ./backend
+      run: npm audit --audit-level=high
+    
+    - name: Snyk Vulnerability Scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        command: test
+        args: --all-projects --severity-threshold=high
+    
+    - name: Dependency Vulnerability Check
+      uses: dependency-check/Dependency-Check_Action@main
+      id: Depcheck
+      with:
+        project: 'FactuPiCe V2'
+        path: './backend'
+        format: 'HTML'
+    
+    - name: Upload Dependency Check Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: dependency-check-report
+        path: ${{github.workspace}}/reports
+
+  build-and-deploy:
+    name: Build and Deploy
+    needs: [code-quality, security-checks]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install Dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Build Project
+      working-directory: ./backend
+      run: npm run build
+    
+    - name: Run E2E Tests
+      working-directory: ./backend
+      run: npm run test:e2e
+    
+    - name: Docker Build
+      working-directory: ./backend
+      run: |
+        docker build -t factupicev2-backend:${{ github.sha }} .
+        docker tag factupicev2-backend:${{ github.sha }} factupicev2-backend:latest
+    
+    - name: Deploy to Staging
+      if: github.ref == 'refs/heads/develop'
+      run: |
+        # Implementar en entorno de staging
+        echo "Desplegando en entorno de staging"
+    
+    - name: Deploy to Production
+      if: github.ref == 'refs/heads/main'
+      run: |
+        # Implementar en entorno de producción
+        echo "Desplegando en entorno de producción"
+
+  notify:
+    name: Notifications
+    needs: [build-and-deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Slack Notification
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+    
+    - name: Email Notification
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.EMAIL_USER}}
+        password: ${{secrets.EMAIL_PASS}}
+        subject: "FactuPiCe V2 - Build ${{ job.status }}"
+        body: |
+          Build ${{ job.status }} for ${{ github.repository }}
+          Workflow: ${{ github.workflow }}
+          Ref: ${{ github.ref }}
+        to: team@factupicev2.com
+        from: GitHub Actions

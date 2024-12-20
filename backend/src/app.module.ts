@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from '../ormconfig';
+import AppDataSource from '../typeorm.config';
 
 // Módulos de la aplicación
-import { AuthModule } from './auth/auth.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
-import { ModelosFiscalesModule } from './modelos-fiscales/modelos-fiscales.module';
-import { EventosFiscalesModule } from './eventos-fiscales/eventos-fiscales.module';
+import { ClientesModule } from './modules/clientes/clientes.module';
 
 @Module({
   imports: [
@@ -20,15 +19,14 @@ import { EventosFiscalesModule } from './eventos-fiscales/eventos-fiscales.modul
 
     // Configuración de base de datos
     TypeOrmModule.forRootAsync({
-      useFactory: () => dataSourceOptions
+      useFactory: () => AppDataSource.options
     }),
 
     // Módulos de la aplicación
     AuthModule,
     UsuariosModule,
     NotificacionesModule,
-    ModelosFiscalesModule,
-    EventosFiscalesModule
+    ClientesModule
   ],
   controllers: [],
   providers: []

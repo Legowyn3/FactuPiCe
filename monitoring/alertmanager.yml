@@ -1,0 +1,36 @@
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'alertas@factupicev2.com'
+  smtp_auth_username: 'tu_email@gmail.com'
+  smtp_auth_password: 'tu_contraseña_app'
+  smtp_require_tls: true
+
+route:
+  group_by: ['alertname', 'team']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'backend-team'
+
+receivers:
+- name: 'backend-team'
+  email_configs:
+  - to: 'backend-team@factupicev2.com'
+    send_resolved: true
+  
+  slack_configs:
+  - api_url: 'https://hooks.slack.com/services/TU_WEBHOOK_URL'
+    channel: '#alertas-backend'
+    send_resolved: true
+
+  webhook_configs:
+  - url: 'http://localhost:8080/webhook'
+    send_resolved: true
+
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  equal: ['alertname', 'team']
