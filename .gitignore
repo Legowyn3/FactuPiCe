@@ -1,7 +1,9 @@
 # Dependencias
 node_modules/
+frontend/
 npm-debug.log
 yarn-error.log
+*.log
 
 # Archivos de entorno
 .env
@@ -17,7 +19,6 @@ out/
 
 # Logs
 logs/
-*.log
 
 # IDEs y editores
 .idea/
@@ -63,3 +64,13 @@ jest_0/
 # Archivos de configuración de secretos
 *.secrets
 *.key
+
+# Archivos de Python
+*.pyc
+__pycache__/
+
+# Archivos de bases de datos
+*.db
+
+# Entornos virtuales de Python
+venv/
