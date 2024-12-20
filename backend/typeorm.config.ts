@@ -1,56 +1,72 @@
-const { DataSource } = require('typeorm');
-const dotenv = require('dotenv');
-const path = require('path');
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { config } from 'dotenv';
+import { join } from 'path';
 
 // Cargar variables de entorno
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+config();
 
-// Configuración de TypeORM
-const dataSourceOptions = {
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Configuración base de TypeORM
+const baseConfig: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USERNAME || 'factupi',
-  password: process.env.DB_PASSWORD || 'Fact_Pi_C3_2024!',
-  database: process.env.DB_DATABASE || 'factupi_ce',
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   
-  // Configuración de entidades y migraciones
-  entities: [
-    path.join(__dirname, 'src/**/*.entity{.ts,.js}')
-  ],
-  migrations: [
-    path.join(__dirname, 'src/database/migrations/*{.ts,.js}')
-  ],
-
-  // Configuraciones adicionales
-  synchronize: process.env.NODE_ENV === 'development',
-  logging: process.env.NODE_ENV === 'development',
+  // Entidades y migraciones
+  entities: [join(__dirname, 'src/**/*.entity{.ts,.js}')],
+  migrations: [join(__dirname, 'src/database/migrations/*{.ts,.js}')],
   
-  // Configuración SSL para producción
-  ssl: process.env.NODE_ENV === 'production' ? { 
-    rejectUnauthorized: false 
+  // Configuraciones según entorno
+  synchronize: !isProduction,
+  logging: !isProduction,
+  
+  // Configuraciones de conexión
+  connectTimeoutMS: 10000,
+  maxQueryExecutionTime: 1000,
+  poolSize: isProduction ? 50 : 10,
+  
+  // SSL para producción
+  ssl: isProduction ? {
+    rejectUnauthorized: false,
+    ca: process.env.DB_SSL_CA,
   } : false,
-
-  migrationsTableName: 'migrations_history'
+  
+  // Configuración de migraciones
+  migrationsTableName: 'migrations_history',
+  migrationsRun: true
 };
 
-// Crear y exportar DataSource
-const dataSource = new DataSource(dataSourceOptions);
+// Crear DataSource
+export const AppDataSource = new DataSource(baseConfig);
 
-// Método para conectar a la base de datos
-const connectDatabase = async () => {
+// Función de conexión mejorada
+export const connectDatabase = async (): Promise<void> => {
   try {
-    await dataSource.initialize();
+    await AppDataSource.initialize();
     console.log('✅ Conexión a base de datos establecida');
+    
+    // Ejecutar migraciones pendientes
+    const pendingMigrations = await AppDataSource.showMigrations();
+    if (pendingMigrations) {
+      console.log('🔄 Ejecutando migraciones pendientes...');
+      await AppDataSource.runMigrations();
+    }
   } catch (error) {
-    console.error('❌ Error conectando a base de datos:', error);
+    console.error('❌ Error en la conexión a base de datos:', error);
+    
+    // Reintentar conexión en desarrollo
+    if (!isProduction) {
+      console.log('🔄 Reintentando conexión en 5 segundos...');
+      setTimeout(connectDatabase, 5000);
+      return;
+    }
+    
     process.exit(1);
   }
 };
 
-module.exports = {
-  default: dataSource,
-  dataSource,
-  dataSourceOptions,
-  connectDatabase
-};
+export default AppDataSource;

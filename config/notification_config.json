@@ -1,32 +1,108 @@
 {
     "email": {
         "from": "notificaciones@empresa.com",
-        "recipients": [
-            "admin@empresa.com",
-            "soporte@empresa.com"
-        ],
-        "smtp_host": "smtp.empresa.com",
-        "smtp_port": 587,
-        "use_tls": true,
-        "username": "notificaciones@empresa.com",
-        "password": "REPLACE_WITH_ACTUAL_PASSWORD"
+        "recipients": {
+            "admin": ["admin@empresa.com"],
+            "support": ["soporte@empresa.com"],
+            "alerts": ["alertas@empresa.com"]
+        },
+        "smtp": {
+            "host": "smtp.empresa.com",
+            "port": 587,
+            "security": {
+                "tls": true,
+                "verify_cert": true
+            },
+            "auth": {
+                "username": "notificaciones@empresa.com",
+                "password": "${SMTP_PASSWORD}"
+            },
+            "retry": {
+                "max_attempts": 3,
+                "delay": 5000
+            }
+        },
+        "templates": {
+            "path": "./templates/email",
+            "default_language": "es"
+        }
     },
     "slack": {
-        "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
-        "default_channel": "#aeat-notifications",
-        "mention_users": ["@admin"]
+        "workspaces": {
+            "primary": {
+                "webhook_url": "${SLACK_WEBHOOK_URL}",
+                "default_channel": "#aeat-notifications",
+                "mention_users": ["@admin", "@soporte"],
+                "retry_config": {
+                    "max_attempts": 3,
+                    "delay_ms": 2000
+                }
+            }
+        },
+        "rate_limit": {
+            "max_per_minute": 30
+        }
     },
     "webhook": {
-        "url": "https://api.empresa.com/notifications",
-        "auth_token": "REPLACE_WITH_ACTUAL_TOKEN"
+        "endpoints": {
+            "primary": {
+                "url": "https://api.empresa.com/notifications",
+                "method": "POST",
+                "headers": {
+                    "Authorization": "Bearer ${WEBHOOK_AUTH_TOKEN}",
+                    "Content-Type": "application/json"
+                },
+                "timeout_ms": 5000
+            }
+        },
+        "retry": {
+            "max_attempts": 3,
+            "backoff_ms": 1000
+        }
     },
     "channels": {
-        "critical": ["email", "slack", "webhook"],
-        "high": ["email", "slack"],
-        "medium": ["slack"],
-        "low": ["slack"],
-        "certificate": ["email", "slack"],
-        "security": ["email", "slack", "webhook"],
-        "aeat_error": ["email", "slack"]
+        "priorities": {
+            "critical": {
+                "channels": ["email", "slack", "webhook"],
+                "timeout_ms": 30000,
+                "retry": true
+            },
+            "high": {
+                "channels": ["email", "slack"],
+                "timeout_ms": 60000
+            },
+            "medium": {
+                "channels": ["slack"]
+            },
+            "low": {
+                "channels": ["slack"]
+            }
+        },
+        "categories": {
+            "certificate": {
+                "channels": ["email", "slack"],
+                "templates": {
+                    "email": "certificate_notification",
+                    "slack": "cert_alert"
+                }
+            },
+            "security": {
+                "channels": ["email", "slack", "webhook"],
+                "priority": "critical"
+            },
+            "aeat_error": {
+                "channels": ["email", "slack"],
+                "priority": "high",
+                "templates": {
+                    "email": "aeat_error_notification",
+                    "slack": "aeat_alert"
+                }
+            }
+        }
+    },
+    "logging": {
+        "enabled": true,
+        "level": "info",
+        "retention_days": 30
     }
 }

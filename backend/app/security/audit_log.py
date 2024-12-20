@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import logging
 from typing import Any, Dict, Optional
+from logging.handlers import RotatingFileHandler
 
 class AuditLogger:
     def __init__(self):
@@ -9,7 +10,11 @@ class AuditLogger:
         self.logger.setLevel(logging.INFO)
         
         # Configurar el handler para archivo
-        handler = logging.FileHandler("audit.log")
+        handler = RotatingFileHandler(
+            "audit.log",
+            maxBytes=10485760,  # 10MB
+            backupCount=10
+        )
         formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )

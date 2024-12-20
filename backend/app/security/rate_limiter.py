@@ -35,4 +35,10 @@ class RateLimiter:
         if not self.failed_attempts[client_ip]:
             del self.failed_attempts[client_ip]
 
+    def reset_attempts(self, client_ip: str) -> None:
+        """Resetear intentos fallidos después de login exitoso"""
+        with self.lock:
+            if client_ip in self.failed_attempts:
+                del self.failed_attempts[client_ip]
+
 rate_limiter = RateLimiter()

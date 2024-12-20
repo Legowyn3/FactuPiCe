@@ -1,6 +1,24 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import os
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+
+class PDFGenerator:
+    def __init__(self, output_dir: str = "facturas_exportadas"):
+        self.output_dir = output_dir
+        self.styles = getSampleStyleSheet()
+        self._setup_custom_styles()
+
+    def _setup_custom_styles(self):
+        """Configura estilos personalizados para el PDF"""
+        self.styles.add(ParagraphStyle(
+            name='FacturaTitle',
+            fontSize=16,
+            spaceAfter=30,
+            alignment=1  # Centrado
+        ))
 
 def generar_factura_pdf(factura, output_dir="facturas_exportadas"):
     """
