@@ -17,6 +17,41 @@ export class Usuario {
   password: string = '';
 
   @Column({ nullable: true })
+  @Exclude()
+  refreshToken?: string;
+
+  @Column({ default: false })
+  mfaEnabled: boolean;
+
+  @Column({ nullable: true })
+  @Exclude()
+  mfaSecret?: string;
+
+  @Column({ default: 0 })
+  failedLoginAttempts: number;
+
+  @Column({ default: false })
+  isLocked: boolean;
+
+  @Column({ nullable: true })
+  lockedUntil?: Date;
+
+  @Column({ nullable: true })
+  lastLoginAttempt?: Date;
+
+  @Column({ nullable: true })
+  lastPasswordChangeAt?: Date;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @Column({ nullable: true })
+  passwordResetToken?: string;
+
+  @Column({ nullable: true })
+  passwordResetExpires?: Date;
+
+  @Column({ nullable: true })
   nif: string = '';
 
   @Column({ nullable: true })
@@ -49,7 +84,18 @@ export class Usuario {
       activo: true,
       createdAt: new Date(),
       updatedAt: new Date(),
+      refreshToken: undefined,
+      mfaEnabled: false,
+      mfaSecret: undefined,
+      failedLoginAttempts: 0,
+      isLocked: false,
+      lockedUntil: undefined,
+      lastLoginAttempt: undefined,
+      lastPasswordChangeAt: undefined,
+      isActive: true,
+      passwordResetToken: undefined,
+      passwordResetExpires: undefined,
       ...partial
     });
   }
-} 
+}

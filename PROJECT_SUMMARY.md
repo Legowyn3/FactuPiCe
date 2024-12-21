@@ -91,13 +91,17 @@ FactuPiCe es una aplicación de facturación diseñada específicamente para aut
 - [x] Autenticación JWT
 - [x] Validación de contraseñas
 - [x] Middleware de seguridad
-- [ ] Multi-Factor Authentication (MFA)
+- [x] Multi-Factor Authentication (MFA)
+- [x] Control de intentos de inicio de sesión
+- [x] Bloqueo de cuentas
+- [x] Tokens de refresco
 
 #### Modelo de Datos
 - [x] Modelo de Factura
 - [x] Modelo de Cliente
 - [x] Configuración inicial de base de datos
-- [ ] Validaciones de negocio
+- [x] Validaciones de seguridad en modelos
+- [ ] Validaciones avanzadas de negocio
 
 #### Facturación
 - [ ] Generación de facturas
@@ -113,10 +117,10 @@ FactuPiCe es una aplicación de facturación diseñada específicamente para aut
 
 ## Próximos Pasos
 
-### Curto Plazo (Q1 2024)
+### Corto Plazo (Q1 2024)
 1. Completar implementación de autenticación
 2. Desarrollar lógica de generación de facturas
-3. Implementar validaciones de negocio
+3. Implementar validaciones de seguridad
 4. Configurar exportación a formatos fiscales
 
 ### Medio Plazo (Q2 2024)
